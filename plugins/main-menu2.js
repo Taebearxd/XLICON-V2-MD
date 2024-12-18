@@ -19,7 +19,6 @@ let handler = async (m, { conn, usedPrefix, command }) => {
     
     if (!(who in global.db.data.users)) throw `✳️ The user is not found in my database`;
     
-    let pp = './Assets/XLICON-V2.jpg';
     let user = global.db.data.users[who];
     let { name, exp, diamond, lastclaim, registered, regTime, age, level, role, warn } = global.db.data.users[who];
     let { min, xp, max } = xpRange(user.level, global.multiplier);
@@ -36,12 +35,12 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 
     let taguser = '@' + m.sender.split("@s.whatsapp.net")[0];
     let str = `
-🚀 *_Buckle up ${name}, ${greeting}! We're going on an adventure!*_ 🚀
+🚀 *Buckle up ${name}, ${greeting}! We're going on an adventure!* 🚀
 
 🌠 *_Bible quote of the day: ${quote}_* 🌠
 
-┏━━🤖 _BOT STATUS:_🤖━━┓
-┃ 🏮  *Founder:* Salman Ahmad
+┏━━🎗 _BOT STATUS:_ 🎗━━┓
+┃ 💡  *Founder:* Salman Ahmad
 ┃ 🤡  *Bot Name:* ${botname} 
 ┃ 💻  *Host:* Kali Linux
 ┃ 📣  *Prefix:* ${usedPrefix} 
@@ -55,7 +54,7 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 ┃ ⏲️  *Current Time:* ${wib} 
 ╰───────────────⍟
 
-┏━😎 _User Info:_ 😎━┓
+┏━🏮 _User Info:_ 🏮━┓
 ┃ 👾  *User Tag:* ${taguser} 
 ┃ 😇  *Name:* ${name} 
 ┃ 🌟  *Master Mind:* ${author} 
@@ -63,16 +62,44 @@ let handler = async (m, { conn, usedPrefix, command }) => {
 ┃ 🏆  *Rank:* ${role}
 ┃ 🎮  *XP:* ${exp} 
 ╰───────────────⍟
-😇 *_If You need help, Just do this, use ${usedPrefix}list or ${usedPrefix}help2. And enjoy!*_ 😇
+
+
+😇 *If You need help, Just do this, use ${usedPrefix}list or ${usedPrefix}help2. And enjoy!*😇
 `;
 
-    conn.sendFile(m.chat, pp, 'perfil.jpg', str, m, null, rpyt);
+    conn.sendMessage(m.chat, { text: str, contextInfo: {
+        externalAdReply: {
+            title: "Arise!",
+            body: "Check out the latest updates.",
+            thumbnailUrl: "https://i.ibb.co/FnD8Fgc/f1964352-d5f5-402e-bee4-69cc7c5c1569.jpg ",
+            sourceUrl: "https://www.whatsapp.com/channel/0029VaMGgVL3WHTNkhzHik3c",
+        }
+    }}, { quoted: m });
+
     m.react(done);
+
+    if (m.quoted && m.quoted.isForwarded) {
+        const forwardInfo = m.quoted.forwardingScore > 0 ? `Forwarded ${m.quoted.forwardingScore} times` : "Recently Forwarded";
+        const forwardMessage = `This message was ${forwardInfo}.
+Content: ${m.quoted.text || "(No Text Content)"}`;
+
+        await conn.sendMessage(m.chat, {
+            text: forwardMessage,
+            contextInfo: {
+                externalAdReply: {
+                    title: "Forwarded Message Info",
+                    body: "Learn more about this message.",
+                    thumbnailUrl: "https://i.ibb.co/FnD8Fgc/f1964352-d5f5-402e-bee4-69cc7c5c1569.jpg ",
+                    sourceUrl: "https://www.whatsapp.com/channel/0029VaMGgVL3WHTNkhzHik3c",
+                }
+            }
+        }, { quoted: m });
+    }
 };
 
 handler.help = ['main'];
 handler.tags = ['group'];
-handler.command = ['menu2', 'help2'];
+handler.command = ['menu2', 'hmenu'];
 
 export default handler;
 
